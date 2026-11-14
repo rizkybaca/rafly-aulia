@@ -480,7 +480,7 @@
                                 <input type="text" id="rsvp-name" required placeholder="Masukkan Nama Anda" class="w-full px-4 py-3 rounded-xl border border-sage-300 focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white text-sm">
                             </div>
 
-                            <div>
+                            <!-- <div>
                                 <label class="block text-xs font-bold text-sage-800 uppercase tracking-wider mb-2">Konfirmasi Kehadiran</label>
                                 <select id="rsvp-status" required class="w-full px-4 py-3 rounded-xl border border-sage-300 focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white text-sm">
                                     <option value="" disabled selected>-- Pilih Kehadiran --</option>
@@ -488,7 +488,7 @@
                                     <option value="Tidak Hadir">Maaf, Saya Tidak Bisa Hadir</option>
                                     <option value="Masih Ragu">Masih Ragu / Belum Pasti</option>
                                 </select>
-                            </div>
+                            </div> -->
 
                             <div>
                                 <label class="block text-xs font-bold text-sage-800 uppercase tracking-wider mb-2">Jumlah Tamu Hadir</label>
@@ -1066,8 +1066,8 @@
             event.preventDefault();
 
             const name = sanitizeInput(document.getElementById('rsvp-name').value, 60);
-            const status = sanitizeInput(document.getElementById('rsvp-status').value, 25);
-            const count = sanitizeInput(document.getElementById('rsvp-count').value, 20);
+            // const status = sanitizeInput(document.getElementById('rsvp-status').value, 25);
+            // const count = sanitizeInput(document.getElementById('rsvp-count').value, 20);
             const message = sanitizeInput(document.getElementById('rsvp-message').value, 350);
 
             if (!name || !status || !message) {
@@ -1087,7 +1087,7 @@
                 const response = await fetch('/api/wishes', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, status, count, message })
+                    body: JSON.stringify({ name, message })
                 });
 
                 if (!response.ok) throw new Error('Gagal menyimpan ke database');
@@ -1133,26 +1133,26 @@
         function submitRSVP(event) {
             event.preventDefault();
             const name = document.getElementById('rsvp-name').value.trim();
-            const status = document.getElementById('rsvp-status').value;
-            const count = document.getElementById('rsvp-count').value;
+            // const status = document.getElementById('rsvp-status').value;
+            // const count = document.getElementById('rsvp-count').value;
             const message = document.getElementById('rsvp-message').value.trim();
 
             if (!name || !status || !message) return;
 
             // Append wish to live UI
             wishesData.unshift({ name, status, message });
-            renderSampleWishes();
+            // renderSampleWishes();
 
-            // Construct WhatsApp Message
-            const targetPhone = '6281234567890'; // Default WhatsApp destination
-            const waMessage = `Halo Rafly & Aulia,%0A%0ASaya ingin mengonfirmasi kehadiran di pernikahan kalian:%0A- *Nama:* ${encodeURIComponent(name)}%0A- *Ucapan & Doa:* ${encodeURIComponent(message)}%0A%0ATerima kasih!`;
+            // // Construct WhatsApp Message
+            // const targetPhone = '6281234567890'; // Default WhatsApp destination
+            // const waMessage = `Halo Rafly & Aulia,%0A%0ASaya ingin mengonfirmasi kehadiran di pernikahan kalian:%0A- *Nama:* ${encodeURIComponent(name)}%0A- *Ucapan & Doa:* ${encodeURIComponent(message)}%0A%0ATerima kasih!`;
             
-            const waUrl = `https://wa.me/${targetPhone}?text=${waMessage}`;
+            // const waUrl = `https://wa.me/${targetPhone}?text=${waMessage}`;
             
-            showToast('Mengalihkan ke WhatsApp...');
-            setTimeout(() => {
-                window.open(waUrl, '_blank');
-            }, 800);
+            // showToast('Mengalihkan ke WhatsApp...');
+            // setTimeout(() => {
+            //     window.open(waUrl, '_blank');
+            // }, 800);
 
             // Reset Form
             document.getElementById('rsvp-form').reset();
