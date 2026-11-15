@@ -1100,58 +1100,6 @@
                 }
             }
         }
-        
-        // RSVP Form Handling & WhatsApp Integration
-        // const wishesData = [
-        //     { name: 'Budi Santoso', status: 'Hadir', message: 'Selamat Rafly dan Aulia! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin.' },
-        //     { name: 'Siti Rahma', status: 'Hadir', message: 'Happy wedding sahabatku Aulia! Lancar sampai hari H yaa.' },
-        //     { name: 'Dimas Kurniawan', status: 'Masih Ragu', message: 'Selamat atas pernikahan kalian. Semoga acaranya berjalan sukses dan lancar.' }
-        // ];
-
-        // function renderSampleWishes() {
-        //     const container = document.getElementById('wishes-container');
-        //     container.innerHTML = '';
-        //     wishesData.forEach(w => {
-        //         const card = document.createElement('div');
-        //         card.className = 'bg-white p-3.5 rounded-2xl border border-sage-200 text-xs shadow-2xs space-y-1';
-        //         card.innerHTML = `
-        //             <div class="flex items-center justify-between">
-        //                 <span class="font-bold text-sage-900">${escapeHtml(w.name)}</span>
-        //                 <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${w.status === 'Hadir' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${escapeHtml(w.status)}</span>
-        //             </div>
-        //             <p class="text-slate-600 leading-normal">${escapeHtml(w.message)}</p>
-        //         `;
-        //         container.appendChild(card);
-        //     });
-        // }
-
-        function submitRSVP(event) {
-            event.preventDefault();
-            const name = document.getElementById('rsvp-name').value.trim();
-            // const status = document.getElementById('rsvp-status').value;
-            // const count = document.getElementById('rsvp-count').value;
-            const message = document.getElementById('rsvp-message').value.trim();
-
-            if (!name || !status || !message) return;
-
-            // Append wish to live UI
-            wishesData.unshift({ name, status, message });
-            // renderSampleWishes();
-
-            // // Construct WhatsApp Message
-            // const targetPhone = '6281234567890'; // Default WhatsApp destination
-            // const waMessage = `Halo Rafly & Aulia,%0A%0ASaya ingin mengonfirmasi kehadiran di pernikahan kalian:%0A- *Nama:* ${encodeURIComponent(name)}%0A- *Ucapan & Doa:* ${encodeURIComponent(message)}%0A%0ATerima kasih!`;
-            
-            // const waUrl = `https://wa.me/${targetPhone}?text=${waMessage}`;
-            
-            // showToast('Mengalihkan ke WhatsApp...');
-            // setTimeout(() => {
-            //     window.open(waUrl, '_blank');
-            // }, 800);
-
-            // Reset Form
-            document.getElementById('rsvp-form').reset();
-        }
 
         function escapeHtml(text) {
             return text.replace(/[&<>"']/g, function(m) {
