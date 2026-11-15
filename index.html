@@ -490,14 +490,14 @@
                                 </select>
                             </div> -->
 
-                            <div>
+                            <!-- <div>
                                 <label class="block text-xs font-bold text-sage-800 uppercase tracking-wider mb-2">Jumlah Tamu Hadir</label>
                                 <select id="rsvp-count" class="w-full px-4 py-3 rounded-xl border border-sage-300 focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white text-sm">
                                     <option value="1 Orang">1 Orang</option>
                                     <option value="2 Orang">2 Orang</option>
                                     <option value="3+ Orang">3 Orang atau Lebih</option>
                                 </select>
-                            </div>
+                            </div> -->
 
                             <div>
                                 <label class="block text-xs font-bold text-sage-800 uppercase tracking-wider mb-2">Ucapan &amp; Doa Restu</label>
@@ -1102,28 +1102,28 @@
         }
         
         // RSVP Form Handling & WhatsApp Integration
-        const wishesData = [
-            { name: 'Budi Santoso', status: 'Hadir', message: 'Selamat Rafly dan Aulia! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin.' },
-            { name: 'Siti Rahma', status: 'Hadir', message: 'Happy wedding sahabatku Aulia! Lancar sampai hari H yaa.' },
-            { name: 'Dimas Kurniawan', status: 'Masih Ragu', message: 'Selamat atas pernikahan kalian. Semoga acaranya berjalan sukses dan lancar.' }
-        ];
+        // const wishesData = [
+        //     { name: 'Budi Santoso', status: 'Hadir', message: 'Selamat Rafly dan Aulia! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin.' },
+        //     { name: 'Siti Rahma', status: 'Hadir', message: 'Happy wedding sahabatku Aulia! Lancar sampai hari H yaa.' },
+        //     { name: 'Dimas Kurniawan', status: 'Masih Ragu', message: 'Selamat atas pernikahan kalian. Semoga acaranya berjalan sukses dan lancar.' }
+        // ];
 
-        function renderSampleWishes() {
-            const container = document.getElementById('wishes-container');
-            container.innerHTML = '';
-            wishesData.forEach(w => {
-                const card = document.createElement('div');
-                card.className = 'bg-white p-3.5 rounded-2xl border border-sage-200 text-xs shadow-2xs space-y-1';
-                card.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-sage-900">${escapeHtml(w.name)}</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${w.status === 'Hadir' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${escapeHtml(w.status)}</span>
-                    </div>
-                    <p class="text-slate-600 leading-normal">${escapeHtml(w.message)}</p>
-                `;
-                container.appendChild(card);
-            });
-        }
+        // function renderSampleWishes() {
+        //     const container = document.getElementById('wishes-container');
+        //     container.innerHTML = '';
+        //     wishesData.forEach(w => {
+        //         const card = document.createElement('div');
+        //         card.className = 'bg-white p-3.5 rounded-2xl border border-sage-200 text-xs shadow-2xs space-y-1';
+        //         card.innerHTML = `
+        //             <div class="flex items-center justify-between">
+        //                 <span class="font-bold text-sage-900">${escapeHtml(w.name)}</span>
+        //                 <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${w.status === 'Hadir' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${escapeHtml(w.status)}</span>
+        //             </div>
+        //             <p class="text-slate-600 leading-normal">${escapeHtml(w.message)}</p>
+        //         `;
+        //         container.appendChild(card);
+        //     });
+        // }
 
         function submitRSVP(event) {
             event.preventDefault();
@@ -1136,7 +1136,7 @@
 
             // Append wish to live UI
             wishesData.unshift({ name, status, message });
-            renderSampleWishes();
+            // renderSampleWishes();
 
             // // Construct WhatsApp Message
             // const targetPhone = '6281234567890'; // Default WhatsApp destination
