@@ -42,18 +42,16 @@ export default async function handler(req, res) {
                 .slice(0, max);
 
             const name = clean(body.name, 60);
-            const status = clean(body.status, 25);
-            const count = clean(body.count, 20);
+            // const status = clean(body.status, 25);
+            // const count = clean(body.count, 20);
             const message = clean(body.message, 350);
 
-            if (!name || !status || !message) {
-                return res.status(400).json({ error: 'Nama, kehadiran, dan ucapan wajib diisi.' });
+            if (!name || !message) {
+                return res.status(400).json({ error: 'Nama dan ucapan wajib diisi.' });
             }
 
             const newWish = {
                 name,
-                status,
-                count,
                 message,
                 createdAt: new Date().toISOString()
             };
