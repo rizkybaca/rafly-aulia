@@ -268,6 +268,35 @@
             70%  { transform: translate3d(25vw, 68vh, 0) rotate(-10deg); }
             100% { transform: translate3d(-60px, 88vh, 0) rotate(-20deg); }
         }
+
+        /* Ornamen Ukiran Jawa Khusus Sudut Kanan Atas Card */
+        .jawa-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .jawa-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 110px;
+            height: 110px;
+            background-image: url('ornamen-jawa.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top right;
+            mix-blend-mode: multiply;
+            opacity: 0.85;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @media (min-width: 768px) {
+            .jawa-card::after {
+                width: 135px;
+                height: 135px;
+            }
+        }
+
     </style>
 </head>
 <body class="font-sans bg-cream-100 text-slate-800 antialiased leading-relaxed overflow-x-hidden selection:bg-sage-500 selection:text-white">
@@ -279,14 +308,14 @@
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- LAYAR ANIMASI KUPU-KUPU TERBANG -->
-    <div id="butterfly-layer" class="fixed inset-0 z-30 pointer-events-none overflow-hidden"></div>
+    <!-- <div id="butterfly-layer" class="fixed inset-0 z-30 pointer-events-none overflow-hidden"></div> -->
 
     <!-- COVER MODAL OVERLAY (Layar Utama Sebelum Ditinggalkan) -->
     <div id="cover-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-sage-900 bg-opacity-95 text-white p-4 transition-all duration-700">
         <!-- Background Ornamen Decorative -->
         <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
         
-        <div class="relative max-w-lg w-full text-center p-8 rounded-3xl glass-card text-slate-800 shadow-2xl border border-gold-500/30 transform transition-all duration-500">
+        <div class="jawa-card relative max-w-lg w-full text-center p-8 rounded-3xl glass-card text-slate-800 shadow-2xl border border-gold-500/30 transform transition-all duration-500">
             <!-- Top Floral Ornament -->
             <div class="text-sage-700 text-4xl mb-3 animate-float">
                 <i class="fa-solid fa-leaf"></i>
@@ -327,6 +356,9 @@
             <!-- Background Ornaments with Parallax -->
             <div class="parallax-leaf absolute -top-24 -left-24 w-96 h-96 bg-sage-200/40 rounded-full blur-3xl pointer-events-none" data-speed="0.2"></div>
             <div class="parallax-leaf absolute -bottom-24 -right-24 w-96 h-96 bg-gold-400/10 rounded-full blur-3xl pointer-events-none" data-speed="-0.2"></div>
+
+            <!-- LAYAR ANIMASI KUPU-KUPU (KHUSUS HERO SECTION) -->
+            <div id="butterfly-layer" class="absolute inset-0 z-[5] pointer-events-none overflow-hidden"></div>
 
             <!-- Floating Leaf SVG Elements -->
             <svg class="parallax-leaf absolute top-12 left-8 text-sage-400/30 w-16 h-16 animate-float" data-speed="0.15" fill="currentColor" viewBox="0 0 24 24"><path d="M17,8C8,10 59,16.17 3.82,21.34L5.23,22.75C11.4,17.58 17.58,11.4 17,8M3.5,9.5C2.67,9.5 2,10.17 2,11C2,11.83 2.67,12.5 3.5,12.5C4.33,12.5 5,11.83 5,11C5,10.17 4.33,9.5 3.5,9.5Z"/></svg>
@@ -382,7 +414,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8 items-center">
                     
                     <!-- Mempelai Pria -->
-                    <div class="reveal-left bg-cream-100 p-8 rounded-3xl border border-sage-200 shadow-sm hover-card-3d text-center">
+                    <div class="jawa-card reveal-left bg-cream-100 p-8 rounded-3xl border border-sage-200 shadow-sm hover-card-3d text-center">
                         <div class="w-40 h-40 mx-auto rounded-full overflow-hidden border-4 border-white shadow-md mb-6 group">
                             <img src="1.jpeg" alt="Rafly Setyawan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/4A6B5D/ffffff?text=Rafly'">
                         </div>
@@ -405,7 +437,7 @@
                     </div>
 
                     <!-- Mempelai Wanita -->
-                    <div class="reveal-right bg-cream-100 p-8 rounded-3xl border border-sage-200 shadow-sm hover-card-3d text-center">
+                    <div class="jawa-card reveal-right bg-cream-100 p-8 rounded-3xl border border-sage-200 shadow-sm hover-card-3d text-center">
                         <div class="w-40 h-40 mx-auto rounded-full overflow-hidden border-4 border-white shadow-md mb-6 group">
                             <img src="2.jpeg" alt="Aulia Irfanny" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/8AA899/ffffff?text=Aulia'">
                         </div>
@@ -466,7 +498,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Akad Nikah Card -->
-                    <div class="reveal-left bg-white p-8 rounded-3xl border border-sage-200 shadow-md relative overflow-hidden group hover-card-3d">
+                    <div class="jawa-card reveal-left bg-white p-8 rounded-3xl border border-sage-200 shadow-md relative overflow-hidden group hover-card-3d">
                         <div class="w-12 h-12 rounded-2xl bg-sage-100 text-sage-700 flex items-center justify-center text-xl mb-6 font-semibold group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-ring"></i>
                         </div>
@@ -480,7 +512,7 @@
                     </div>
 
                     <!-- Resepsi Card -->
-                    <div class="reveal-right bg-white p-8 rounded-3xl border border-sage-200 shadow-md relative overflow-hidden group hover-card-3d">
+                    <div class="jawa-card reveal-right bg-white p-8 rounded-3xl border border-sage-200 shadow-md relative overflow-hidden group hover-card-3d">
                         <div class="w-12 h-12 rounded-2xl bg-gold-100 text-gold-600 flex items-center justify-center text-xl mb-6 font-semibold group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-champagne-glasses"></i>
                         </div>
@@ -495,7 +527,7 @@
                 </div>
 
                 <!-- Google Maps Button Container -->
-                <div class="reveal-up delay-2 mt-10 bg-white p-6 rounded-3xl border border-sage-200 shadow-md text-center hover-card-3d">
+                <div class="jawa-card reveal-up delay-2 mt-10 bg-white p-6 rounded-3xl border border-sage-200 shadow-md text-center hover-card-3d">
                     <div class="mb-4">
                         <h4 class="font-serif text-lg font-bold text-sage-900">Lokasi Acara</h4>
                         <p class="text-xs text-slate-500">Kediaman Bapak Sumari. Jl. Sarera, Bumiraya, Nabire Barat</p>
@@ -567,7 +599,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     
                     <!-- Form Card -->
-                    <div class="reveal-left bg-cream-100 p-6 sm:p-8 rounded-3xl border border-sage-200 shadow-sm hover-card-3d">
+                    <div class="jawa-card reveal-left bg-cream-100 p-6 sm:p-8 rounded-3xl border border-sage-200 shadow-sm hover-card-3d">
                         <form id="rsvp-form" onsubmit="submitRSVP(event)" class="space-y-4">
                             <div>
                                 <label class="block text-xs font-bold text-sage-800 uppercase tracking-wider mb-2">Nama Lengkap</label>
@@ -606,7 +638,7 @@
                     </div>
 
                     <!-- Live Wishes Feed Card -->
-                    <div class="reveal-right bg-sage-50 p-6 sm:p-8 rounded-3xl border border-sage-200 shadow-sm flex flex-col h-[500px]">
+                    <div class="jawa-card reveal-right bg-sage-50 p-6 sm:p-8 rounded-3xl border border-sage-200 shadow-sm flex flex-col h-[500px]">
                         <h3 class="font-serif text-xl font-bold text-sage-900 mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-comments text-gold-500"></i>
                             <span>Ucapan &amp; Doa Tamu</span>
@@ -1410,11 +1442,12 @@
         }
 
         // Pembangkit Animasi Kupu-Kupu Terbang
+        // Pembangkit Animasi Kupu-Kupu Terbang (Khusus Hero Section)
         function initButterflies() {
             const layer = document.getElementById('butterfly-layer');
             if (!layer) return;
 
-            const jumlahKupuKupu = 18; // Ubah angka ini jika ingin lebih ramai atau lebih sedikit
+            const jumlahKupuKupu = 12; // Lebih proporsional untuk area Hero Section
             const warnaTema = [
                 { main: '#D4AF37', accent: '#F3D979' }, // Emas Utama
                 { main: '#E6C252', accent: '#FFFDF9' }, // Emas Champagne
@@ -1426,18 +1459,18 @@
             for (let i = 0; i < jumlahKupuKupu; i++) {
                 const warna = warnaTema[i % warnaTema.length];
                 const jalur = jalurTerbang[i % jalurTerbang.length];
-                const ukuran = Math.floor(Math.random() * 16) + 18; // Ukuran 18px - 34px
-                const durasiTerbang = (Math.random() * 12 + 16).toFixed(1); // 16 - 28 detik
-                const jedaAwal = -(Math.random() * 25).toFixed(1); // Langsung tersebar di layar
-                const kecepatanKepak = (Math.random() * 0.22 + 0.26).toFixed(2); // 0.26s - 0.48s
-                const geserVertikal = Math.floor(Math.random() * 24) - 12; // Variasi tinggi -12vh s/d +12vh
+                const ukuran = Math.floor(Math.random() * 14) + 18; // Ukuran 18px - 32px
+                const durasiTerbang = (Math.random() * 10 + 16).toFixed(1); // 16 - 26 detik
+                const jedaAwal = -(Math.random() * 25).toFixed(1);
+                const kecepatanKepak = (Math.random() * 0.22 + 0.26).toFixed(2);
+                const geserVertikal = Math.floor(Math.random() * 20) - 10; // Variasi -10% s/d +10%
 
                 const el = document.createElement('div');
                 el.className = 'butterfly-wrap';
                 el.style.width = `${ukuran}px`;
                 el.style.height = `${ukuran}px`;
-                el.style.top = `${geserVertikal}vh`;
-                el.style.opacity = (Math.random() * 0.3 + 0.65).toFixed(2);
+                el.style.top = `${geserVertikal}%`;
+                el.style.opacity = (Math.random() * 0.25 + 0.65).toFixed(2);
                 el.style.setProperty('--flap-speed', `${kecepatanKepak}s`);
                 el.style.animation = `${jalur} ${durasiTerbang}s linear ${jedaAwal}s infinite`;
 
