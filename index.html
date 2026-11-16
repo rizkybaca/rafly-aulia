@@ -193,6 +193,81 @@
             transition: transform 0.2s cubic-bezier(0,0,0.2,1);
             pointer-events: none;
         }
+
+        /* Animasi Kupu-Kupu Terbang */
+        .butterfly-wrap {
+            position: absolute;
+            will-change: transform;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 6px rgba(38, 57, 50, 0.15));
+        }
+        .butterfly-body-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wing-left {
+            width: 50%;
+            height: 100%;
+            transform-origin: right center;
+            animation: flap-left var(--flap-speed, 0.35s) ease-in-out infinite alternate;
+        }
+        .wing-right {
+            width: 50%;
+            height: 100%;
+            transform-origin: left center;
+            animation: flap-right var(--flap-speed, 0.35s) ease-in-out infinite alternate;
+        }
+        .butterfly-thorax {
+            position: absolute;
+            width: 2.5px;
+            height: 42%;
+            top: 32%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: #385247;
+        }
+
+        @keyframes flap-left {
+            0%   { transform: perspective(120px) rotateY(8deg); }
+            100% { transform: perspective(120px) rotateY(70deg); }
+        }
+        @keyframes flap-right {
+            0%   { transform: perspective(120px) rotateY(-8deg); }
+            100% { transform: perspective(120px) rotateY(-70deg); }
+        }
+
+        /* 4 Jalur Terbang Melengkung (Kiri-Kanan & Diagonal) */
+        @keyframes fly-path-1 {
+            0%   { transform: translate3d(-60px, 15vh, 0) rotate(25deg); }
+            25%  { transform: translate3d(28vw, 8vh, 0) rotate(10deg); }
+            50%  { transform: translate3d(55vw, 22vh, 0) rotate(32deg); }
+            75%  { transform: translate3d(82vw, 12vh, 0) rotate(15deg); }
+            100% { transform: translate3d(calc(100vw + 60px), 20vh, 0) rotate(25deg); }
+        }
+        @keyframes fly-path-2 {
+            0%   { transform: translate3d(calc(100vw + 60px), 65vh, 0) rotate(-25deg); }
+            25%  { transform: translate3d(72vw, 55vh, 0) rotate(-12deg); }
+            50%  { transform: translate3d(45vw, 72vh, 0) rotate(-32deg); }
+            75%  { transform: translate3d(18vw, 58vh, 0) rotate(-15deg); }
+            100% { transform: translate3d(-60px, 68vh, 0) rotate(-25deg); }
+        }
+        @keyframes fly-path-3 {
+            0%   { transform: translate3d(-60px, 85vh, 0) rotate(15deg); }
+            30%  { transform: translate3d(30vw, 62vh, 0) rotate(5deg); }
+            65%  { transform: translate3d(68vw, 38vh, 0) rotate(20deg); }
+            100% { transform: translate3d(calc(100vw + 60px), 12vh, 0) rotate(10deg); }
+        }
+        @keyframes fly-path-4 {
+            0%   { transform: translate3d(calc(100vw + 60px), 25vh, 0) rotate(-15deg); }
+            35%  { transform: translate3d(65vw, 45vh, 0) rotate(-30deg); }
+            70%  { transform: translate3d(25vw, 68vh, 0) rotate(-10deg); }
+            100% { transform: translate3d(-60px, 88vh, 0) rotate(-20deg); }
+        }
     </style>
 </head>
 <body class="font-sans bg-cream-100 text-slate-800 antialiased leading-relaxed overflow-x-hidden selection:bg-sage-500 selection:text-white">
@@ -202,6 +277,9 @@
 
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- LAYAR ANIMASI KUPU-KUPU TERBANG -->
+    <div id="butterfly-layer" class="fixed inset-0 z-30 pointer-events-none overflow-hidden"></div>
 
     <!-- COVER MODAL OVERLAY (Layar Utama Sebelum Ditinggalkan) -->
     <div id="cover-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-sage-900 bg-opacity-95 text-white p-4 transition-all duration-700">
@@ -914,6 +992,7 @@
             // Initialize Animations & Ripple Effects
             initScrollAnimations();
             initRippleButtons();
+            initButterflies();
         });
 
         // Open Invitation function
@@ -1330,7 +1409,55 @@
             document.getElementById('generator-modal').classList.add('hidden');
         }
 
+        // Pembangkit Animasi Kupu-Kupu Terbang
+        function initButterflies() {
+            const layer = document.getElementById('butterfly-layer');
+            if (!layer) return;
 
+            const jumlahKupuKupu = 18; // Ubah angka ini jika ingin lebih ramai atau lebih sedikit
+            const warnaTema = [
+                { main: '#D4AF37', accent: '#F3D979' }, // Emas Utama
+                { main: '#E6C252', accent: '#FFFDF9' }, // Emas Champagne
+                { main: '#8AA899', accent: '#D5E2DB' }, // Sage Green
+                { main: '#F5EFE6', accent: '#D4AF37' }  // Putih Krem & Emas
+            ];
+            const jalurTerbang = ['fly-path-1', 'fly-path-2', 'fly-path-3', 'fly-path-4'];
+
+            for (let i = 0; i < jumlahKupuKupu; i++) {
+                const warna = warnaTema[i % warnaTema.length];
+                const jalur = jalurTerbang[i % jalurTerbang.length];
+                const ukuran = Math.floor(Math.random() * 16) + 18; // Ukuran 18px - 34px
+                const durasiTerbang = (Math.random() * 12 + 16).toFixed(1); // 16 - 28 detik
+                const jedaAwal = -(Math.random() * 25).toFixed(1); // Langsung tersebar di layar
+                const kecepatanKepak = (Math.random() * 0.22 + 0.26).toFixed(2); // 0.26s - 0.48s
+                const geserVertikal = Math.floor(Math.random() * 24) - 12; // Variasi tinggi -12vh s/d +12vh
+
+                const el = document.createElement('div');
+                el.className = 'butterfly-wrap';
+                el.style.width = `${ukuran}px`;
+                el.style.height = `${ukuran}px`;
+                el.style.top = `${geserVertikal}vh`;
+                el.style.opacity = (Math.random() * 0.3 + 0.65).toFixed(2);
+                el.style.setProperty('--flap-speed', `${kecepatanKepak}s`);
+                el.style.animation = `${jalur} ${durasiTerbang}s linear ${jedaAwal}s infinite`;
+
+                el.innerHTML = `
+                    <div class="butterfly-body-box">
+                        <svg class="wing-left" viewBox="0 0 50 100">
+                            <path d="M50,45 C32,12 4,14 8,44 C10,55 32,56 50,52 Z" fill="${warna.main}" />
+                            <path d="M50,52 C32,56 15,74 26,87 C36,96 48,76 50,58 Z" fill="${warna.accent}" />
+                        </svg>
+                        <div class="butterfly-thorax"></div>
+                        <svg class="wing-right" viewBox="0 0 50 100">
+                            <path d="M0,45 C18,12 46,14 42,44 C40,55 18,56 0,52 Z" fill="${warna.main}" />
+                            <path d="M0,52 C18,56 35,74 24,87 C14,96 2,76 0,58 Z" fill="${warna.accent}" />
+                        </svg>
+                    </div>
+                `;
+
+                layer.appendChild(el);
+            }
+        }
     </script>
 </body>
 </html>
