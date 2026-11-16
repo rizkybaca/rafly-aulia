@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undangan Pernikahan Rafly & Aulia</title>
+
+    <!-- Favicon (Ikon Tab Browser) -->
+    <link rel="icon" type="image/jpeg" href="https://rafly-aulia.vercel.app/icon.jpg">
+
+    <!-- Open Graph Meta Tags (Preview Gambar di WhatsApp, IG, & Facebook) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Undangan Pernikahan Rafly & Aulia">
+    <meta property="og:title" content="Undangan Pernikahan Rafly & Aulia">
+    <meta property="og:description" content="Minggu, 6 Desember 2026 • Kediaman Bapak Sumari, Nabire Barat">
+    <meta property="og:url" content="https://rafly-aulia.vercel.app/">
+    <meta property="og:image" content="https://rafly-aulia.vercel.app/icon.jpg?v=1">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="600">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -224,6 +238,8 @@
             <i id="audio-icon" class="fa-solid fa-music text-lg group-hover:rotate-12"></i>
         </button>
     </div>
+    <!-- PEMUTAR LAGU LATAR -->
+    <audio id="bg-music" src="sempurna.mp3" loop preload="auto"></audio>
 
     <!-- MAIN WEBSITE CONTENT -->
     <div id="main-content" class="opacity-0 transition-opacity duration-1000">
@@ -720,9 +736,64 @@
         }
         
         // Audio Synth Engine (Web Audio API Standalone Romantic Melody)
-        let audioCtx = null;
         let isPlaying = false;
-        let melodyInterval = null;
+
+        function startAudio() {
+            const audio = document.getElementById('bg-music');
+            if (!audio) return;
+
+            audio.volume = 0.7; // Tingkat volume (0.0 sampai 1.0)
+            audio.play().then(() => {
+                isPlaying = true;
+                updateAudioIcon();
+            }).catch((err) => {
+                console.log('Autoplay dicegah browser:', err);
+                isPlaying = false;
+                updateAudioIcon();
+            });
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('bg-music');
+            if (!audio) return;
+
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+            } else {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    updateAudioIcon();
+                }).catch(err => console.log('Gagal memutar audio:', err));
+            }
+            updateAudioIcon();
+        }
+
+        function updateAudioIcon() {
+            const icon = document.getElementById('audio-icon');
+            const btn = document.getElementById('btn-audio-toggle');
+            if (!icon || !btn) return;
+
+            if (isPlaying) {
+                icon.className = 'fa-solid fa-music text-lg';
+                btn.classList.add('animate-spin-slow');
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-lg';
+                btn.classList.remove('animate-spin-slow');
+            }
+        }
+
+        // Jeda lagu otomatis saat tamu keluar dari browser atau berpindah tab
+        document.addEventListener('visibilitychange', () => {
+            const audio = document.getElementById('bg-music');
+            if (!audio) return;
+
+            if (document.hidden && isPlaying) {
+                audio.pause();
+            } else if (!document.hidden && isPlaying) {
+                audio.play().catch(() => {});
+            }
+        });
 
         // Scroll Progress Bar Update
         function updateScrollProgress() {
@@ -889,72 +960,8 @@
             }
         }
 
-        // Web Audio API Gentle Synthesizer for Romantic Music
-        function startAudio() {
-            if (isPlaying) return;
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                audioCtx = new AudioContext();
-                isPlaying = true;
-                updateAudioIcon();
-
-                // Gentle Arpeggio Sequence (Frequency in Hz)
-                const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 329.63, 392.00];
-                let noteIndex = 0;
-
-                melodyInterval = setInterval(() => {
-                    if (!isPlaying || !audioCtx) return;
-                    
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(notes[noteIndex], audioCtx.currentTime);
-                    
-                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
-                    
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 1.2);
-                    
-                    noteIndex = (noteIndex + 1) % notes.length;
-                }, 400);
-
-            } catch (e) {
-                console.log('Audio Context Error:', e);
-            }
-        }
-
-        function toggleAudio() {
-            if (isPlaying) {
-                isPlaying = false;
-                if (melodyInterval) clearInterval(melodyInterval);
-                if (audioCtx) audioCtx.suspend();
-            } else {
-                if (audioCtx) {
-                    audioCtx.resume();
-                    isPlaying = true;
-                } else {
-                    startAudio();
-                }
-            }
-            updateAudioIcon();
-        }
-
-        function updateAudioIcon() {
-            const icon = document.getElementById('audio-icon');
-            const btn = document.getElementById('btn-audio-toggle');
-            if (isPlaying) {
-                icon.className = 'fa-solid fa-music text-lg';
-                btn.classList.add('animate-spin-slow');
-            } else {
-                icon.className = 'fa-solid fa-volume-xmark text-lg';
-                btn.classList.remove('animate-spin-slow');
-            }
-        }
+        
+        
 
         // Photo Lightbox
         function openLightbox(imgSrc) {
@@ -1264,9 +1271,12 @@
 
             // 2. Susun Teks Pesan sesuai platform (WA pakai *bold*, IG bersih tanpa *)
             const isIG = currentAdminMode === '2';
+            // const messageText = isIG
+            //     ? `Kepada Yth.\nBapak/Ibu/Saudara/i ${cleanName}\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada acara pernikahan kami:\n\nRafly & Aulia\nMinggu, 6 Desember 2026\n\nInformasi lengkap acara dapat diakses melalui tautan berikut:\n${personalUrl}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima kasih.`
+            //     : `Kepada Yth.\n*Bapak/Ibu/Saudara/i ${cleanName}*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada acara pernikahan kami:\n\n*Rafly & Aulia*\nMinggu, 6 Desember 2026\n\nInformasi lengkap acara dapat diakses melalui tautan berikut:\n${personalUrl}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima kasih.`;
             const messageText = isIG
-                ? `Kepada Yth.\nBapak/Ibu/Saudara/i ${cleanName}\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada acara pernikahan kami:\n\nRafly & Aulia\nMinggu, 6 Desember 2026\n\nInformasi lengkap acara dapat diakses melalui tautan berikut:\n${personalUrl}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima kasih.`
-                : `Kepada Yth.\n*Bapak/Ibu/Saudara/i ${cleanName}*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada acara pernikahan kami:\n\n*Rafly & Aulia*\nMinggu, 6 Desember 2026\n\nInformasi lengkap acara dapat diakses melalui tautan berikut:\n${personalUrl}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima kasih.`;
+            ? `Assalamu'alaikum Warahmatullahi Wabarakatuh\n\nKepada Yth. Bapak/Ibu/Saudara/i:\n${cleanName}\n\nTanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:\n\nRafly & Aulia\nMinggu, 6 Desember 2026\n\nInformasi waktu, sesi kehadiran, dan lokasi acara dapat diakses melalui tautan berikut:\n${personalUrl}\n\nMerupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Terima kasih.\n\nWassalamu'alaikum Warahmatullahi Wabarakatuh`
+            : `*Assalamu'alaikum Warahmatullahi Wabarakatuh*\n\nKepada Yth. Bapak/Ibu/Saudara/i:\n*${cleanName}*\n\nTanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:\n\n*Rafly & Aulia*\nMinggu, 6 Desember 2026\n\nInformasi waktu, sesi kehadiran, dan lokasi acara dapat diakses melalui tautan berikut:\n${personalUrl}\n\nMerupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Terima kasih.\n\n*Wassalamu'alaikum Warahmatullahi Wabarakatuh*`;
 
             // 3. Isi kolom
             document.getElementById('gen-phone').value = formatPhoneWA(tamu.nomor);
